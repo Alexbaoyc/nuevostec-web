@@ -8,3 +8,4 @@ dist/
 .env
 .env.*
 !.env.example
+.git_credentials
