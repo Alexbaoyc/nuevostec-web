@@ -674,8 +674,8 @@ const initCanvas = () => {
       const color = node.weight > 0.7 ? '#00D4FF' : node.weight > 0.5 ? '#6366F1' : '#10B981'
       const baseRadius = 6 + node.weight * 6
       for (let i = 0; i < 3; i++) {
-        const phase = (radarAngle * 0.5 + i * 0.33 + node.lat * 0.01) % 1
-        const ringRadius = baseRadius + phase * 30
+        const phase = ((radarAngle * 0.5 + i * 0.33 + node.lat * 0.01) % 1 + 1) % 1
+        const ringRadius = Math.max(0.1, baseRadius + phase * 30)
         const alpha = (1 - phase) * 0.3
         ctx.beginPath()
         ctx.arc(pt.x, pt.y, Math.max(0.1, ringRadius), 0, Math.PI * 2)
