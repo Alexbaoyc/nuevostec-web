@@ -38,7 +38,7 @@
             <!-- Data Flow Canvas Overlay -->
             <canvas
               ref="flowCanvas"
-              class="absolute top-0 left-0 w-full h-full pointer-events-none opacity-70"
+              class="absolute top-0 left-0 w-full h-full pointer-events-none"
             ></canvas>
           </div>
         </div>
@@ -93,7 +93,7 @@
           <span class="text-text-secondary">高贸易活跃度</span>
         </div>
         <div class="flex items-center gap-2">
-          <span class="w-3 h-0.5 bg-gradient-to-r from-accent/50 to-transparent"></span>
+          <span class="w-8 h-0.5 bg-gradient-to-r from-accent to-transparent rounded"></span>
           <span class="text-text-secondary">数据流动路径</span>
         </div>
         <div class="flex items-center gap-2">
@@ -325,9 +325,14 @@ const tradeNodes = [
   { name: '英国', lat: 51.51, lng: -0.13, weight: 0.7 },
 ]
 
-// Particles for data flow
-const particles = []
-const connections = []
+// Flow paths (arc connections between nodes)
+const flowPaths = []
+// Packet particles
+const packets = []
+// Radar sweep
+let radarAngle = 0
+
+const FLOW_COLORS = ['#00D4FF', '#6366F1', '#10B981', '#F59E0B', '#EC4899', '#8B5CF6']
 
 const initMap = () => {
   if (!mapContainer.value) return
@@ -350,20 +355,33 @@ const initMap = () => {
     maxZoom: 19,
   }).addTo(map)
 
-  // Trade hotspots with heat effect
+  // Trade hotspots with heat effect + pulsing rings
   tradeNodes.forEach(hotspot => {
     const radius = 20 + hotspot.weight * 30
-    const circle = L.circle([hotspot.lat, hotspot.lng], {
+    const color = hotspot.weight > 0.7 ? '#00D4FF' : hotspot.weight > 0.5 ? '#6366F1' : '#10B981'
+
+    L.circle([hotspot.lat, hotspot.lng], {
       radius: radius * 1000,
-      fillColor: hotspot.weight > 0.7 ? '#00D4FF' : hotspot.weight > 0.5 ? '#6366F1' : '#10B981',
-      fillOpacity: 0.15,
+      fillColor: color,
+      fillOpacity: 0.1,
       stroke: true,
-      color: hotspot.weight > 0.7 ? '#00D4FF' : hotspot.weight > 0.5 ? '#6366F1' : '#10B981',
+      color: color,
       weight: 1,
-      opacity: 0.6,
+      opacity: 0.4,
     }).addTo(map)
 
-    circle.bindPopup(`
+    // Add node marker with glow
+    const marker = L.circleMarker([hotspot.lat, hotspot.lng], {
+      radius: 4 + hotspot.weight * 4,
+      fillColor: color,
+      fillOpacity: 0.9,
+      stroke: true,
+      color: '#fff',
+      weight: 1,
+      opacity: 0.8,
+    }).addTo(map)
+
+    marker.bindPopup(`
       <div style="min-width: 120px;">
         <strong style="color: #F0F6FF;">${hotspot.name}</strong>
         <p style="color: #94A3B8; font-size: 12px; margin: 4px 0 0;">贸易热度: ${(hotspot.weight * 100).toFixed(0)}%</p>
@@ -371,30 +389,52 @@ const initMap = () => {
     `)
   })
 
-  // Initialize connections between nodes
-  for (let i = 0; i < tradeNodes.length; i++) {
-    for (let j = i + 1; j < tradeNodes.length; j++) {
-      if (Math.random() > 0.5) {
-        connections.push({
-          from: tradeNodes[i],
-          to: tradeNodes[j],
-          intensity: (tradeNodes[i].weight + tradeNodes[j].weight) / 2
+  // Build flow paths (curved arcs between major nodes)
+  const majorNodes = tradeNodes.filter(n => n.weight >= 0.6)
+  for (let i = 0; i < majorNodes.length; i++) {
+    for (let j = i + 1; j < majorNodes.length; j++) {
+      if (Math.random() > 0.35) {
+        const colorIdx = Math.floor(Math.random() * FLOW_COLORS.length)
+        flowPaths.push({
+          from: majorNodes[i],
+          to: majorNodes[j],
+          color: FLOW_COLORS[colorIdx],
+          intensity: (majorNodes[i].weight + majorNodes[j].weight) / 2,
+          dashOffset: Math.random() * 100,
         })
       }
     }
   }
 
-  // Initialize particles
-  for (let i = 0; i < 50; i++) {
-    const conn = connections[Math.floor(Math.random() * connections.length)]
-    particles.push({
-      connection: conn,
+  // Initialize data packets
+  for (let i = 0; i < 120; i++) {
+    const path = flowPaths[Math.floor(Math.random() * flowPaths.length)]
+    packets.push({
+      path: path,
       progress: Math.random(),
-      speed: 0.002 + Math.random() * 0.003,
-      size: 2 + Math.random() * 2,
-      color: Math.random() > 0.5 ? '#00D4FF' : '#6366F1'
+      speed: 0.003 + Math.random() * 0.004,
+      size: 1.5 + Math.random() * 2.5,
+      color: path.color,
+      alpha: 0.6 + Math.random() * 0.4,
+      trailLength: 8 + Math.floor(Math.random() * 12),
+      burst: Math.random() > 0.85, // some packets burst at nodes
     })
   }
+}
+
+// Compute quadratic bezier point for curved arc
+const getArcPoint = (from, to, t, curvature = 0.3) => {
+  const midLat = (from.lat + to.lat) / 2
+  const midLng = (from.lng + to.lng) / 2
+  // Lift the midpoint for arc effect
+  const lift = Math.abs(to.lng - from.lng) * curvature
+  const ctrlLat = midLat + lift * 0.5
+  const ctrlLng = midLng
+
+  const mt = 1 - t
+  const x = mt * mt * from.lng + 2 * mt * t * ctrlLng + t * t * to.lng
+  const y = mt * mt * from.lat + 2 * mt * t * ctrlLat + t * t * to.lat
+  return { lng: x, lat: y }
 }
 
 const initCanvas = () => {
@@ -410,55 +450,203 @@ const initCanvas = () => {
   }
   resize()
 
+  const drawArcPath = (from, to, color, intensity, dashOffset) => {
+    const p1 = map.latLngToContainerPoint([from.lat, from.lng])
+    const p2 = map.latLngToContainerPoint([to.lat, to.lng])
+
+    // Compute midpoint for bezier control
+    const midX = (p1.x + p2.x) / 2
+    const midY = (p1.y + p2.y) / 2
+    const dist = Math.hypot(p2.x - p1.x, p2.y - p1.y)
+    const lift = dist * 0.25
+    // Perpendicular lift
+    const dx = p2.x - p1.x
+    const dy = p2.y - p1.y
+    const len = Math.hypot(dx, dy) || 1
+    const cx = midX - (dy / len) * lift
+    const cy = midY + (dx / len) * lift
+
+    // Draw base arc line (subtle)
+    ctx.beginPath()
+    ctx.moveTo(p1.x, p1.y)
+    ctx.quadraticCurveTo(cx, cy, p2.x, p2.y)
+    ctx.strokeStyle = `${color}${Math.floor(intensity * 25).toString(16).padStart(2, '0')}`
+    ctx.lineWidth = 1
+    ctx.stroke()
+
+    // Draw animated dashed overlay (the "data stream")
+    const gradient = ctx.createLinearGradient(p1.x, p1.y, p2.x, p2.y)
+    gradient.addColorStop(0, `${color}00`)
+    gradient.addColorStop(0.3, `${color}40`)
+    gradient.addColorStop(0.7, `${color}40`)
+    gradient.addColorStop(1, `${color}00`)
+
+    ctx.setLineDash([6, 4])
+    ctx.lineDashOffset = -dashOffset
+    ctx.beginPath()
+    ctx.moveTo(p1.x, p1.y)
+    ctx.quadraticCurveTo(cx, cy, p2.x, p2.y)
+    ctx.strokeStyle = gradient
+    ctx.lineWidth = 1.5
+    ctx.stroke()
+    ctx.setLineDash([])
+  }
+
+  const drawPacket = (packet) => {
+    const from = packet.path.from
+    const to = packet.path.to
+    const t = packet.progress
+
+    const p1 = map.latLngToContainerPoint([from.lat, from.lng])
+    const p2 = map.latLngToContainerPoint([to.lat, to.lng])
+    const midX = (p1.x + p2.x) / 2
+    const midY = (p1.y + p2.y) / 2
+    const dist = Math.hypot(p2.x - p1.x, p2.y - p1.y)
+    const lift = dist * 0.25
+    const dx = p2.x - p1.x
+    const dy = p2.y - p1.y
+    const len = Math.hypot(dx, dy) || 1
+    const cx = midX - (dy / len) * lift
+    const cy = midY + (dx / len) * lift
+
+    // Current position on bezier
+    const mt = 1 - t
+    const bx = mt * mt * p1.x + 2 * mt * t * cx + t * t * p2.x
+    const by = mt * mt * p1.y + 2 * mt * t * cy + t * t * p2.y
+
+    // Draw trail
+    const trailPositions = []
+    for (let i = 1; i <= packet.trailLength; i++) {
+      const tt = Math.max(0, t - (i * 0.015))
+      const mtt = 1 - tt
+      const tx = mtt * mtt * p1.x + 2 * mtt * tt * cx + tt * tt * p2.x
+      const ty = mtt * mtt * p1.y + 2 * mtt * tt * cy + tt * tt * p2.y
+      trailPositions.push({ x: tx, y: ty })
+    }
+
+    // Draw trail gradient
+    for (let i = 0; i < trailPositions.length - 1; i++) {
+      const alpha = (1 - i / trailPositions.length) * packet.alpha * 0.7
+      const width = (1 - i / trailPositions.length) * packet.size * 1.5
+      ctx.beginPath()
+      ctx.moveTo(trailPositions[i].x, trailPositions[i].y)
+      ctx.lineTo(trailPositions[i + 1].x, trailPositions[i + 1].y)
+      ctx.strokeStyle = `${packet.color}${Math.floor(alpha * 255).toString(16).padStart(2, '0')}`
+      ctx.lineWidth = width
+      ctx.lineCap = 'round'
+      ctx.stroke()
+    }
+
+    // Glow around packet head
+    const glowGrad = ctx.createRadialGradient(bx, by, 0, bx, by, packet.size * 5)
+    glowGrad.addColorStop(0, `${packet.color}${Math.floor(packet.alpha * 200).toString(16).padStart(2, '0')}`)
+    glowGrad.addColorStop(1, `${packet.color}00`)
+    ctx.beginPath()
+    ctx.arc(bx, by, packet.size * 5, 0, Math.PI * 2)
+    ctx.fillStyle = glowGrad
+    ctx.fill()
+
+    // Packet core
+    ctx.beginPath()
+    ctx.arc(bx, by, packet.size, 0, Math.PI * 2)
+    ctx.fillStyle = `rgba(255,255,255,${packet.alpha * 0.9})`
+    ctx.fill()
+
+    // Inner bright spot
+    ctx.beginPath()
+    ctx.arc(bx, by, packet.size * 0.4, 0, Math.PI * 2)
+    ctx.fillStyle = '#ffffff'
+    ctx.fill()
+  }
+
+  const drawNodePulse = () => {
+    tradeNodes.forEach(node => {
+      const pt = map.latLngToContainerPoint([node.lat, node.lng])
+      const color = node.weight > 0.7 ? '#00D4FF' : node.weight > 0.5 ? '#6366F1' : '#10B981'
+      const baseRadius = 6 + node.weight * 6
+
+      // Three expanding rings
+      for (let i = 0; i < 3; i++) {
+        const phase = (radarAngle * 0.5 + i * 0.33 + node.lat * 0.01) % 1
+        const ringRadius = baseRadius + phase * 30
+        const alpha = (1 - phase) * 0.3
+
+        ctx.beginPath()
+        ctx.arc(pt.x, pt.y, ringRadius, 0, Math.PI * 2)
+        ctx.strokeStyle = `${color}${Math.floor(alpha * 255).toString(16).padStart(2, '0')}`
+        ctx.lineWidth = 1
+        ctx.stroke()
+      }
+    })
+  }
+
+  const drawRadarSweep = () => {
+    const w = canvas.width
+    const h = canvas.height
+    const cx = w * 0.5
+    const cy = h * 0.5
+    const maxR = Math.hypot(w, h)
+
+    const sweepGrad = ctx.createConicGradient(radarAngle, cx, cy)
+    sweepGrad.addColorStop(0, 'rgba(0,212,255,0.04)')
+    sweepGrad.addColorStop(0.08, 'rgba(0,212,255,0.0)')
+    sweepGrad.addColorStop(1, 'rgba(0,212,255,0.0)')
+
+    ctx.beginPath()
+    ctx.arc(cx, cy, maxR, 0, Math.PI * 2)
+    ctx.fillStyle = sweepGrad
+    ctx.fill()
+
+    // Sweep line glow
+    const lineLen = maxR
+    const ex = cx + Math.cos(radarAngle) * lineLen
+    const ey = cy + Math.sin(radarAngle) * lineLen
+    const lineGrad = ctx.createLinearGradient(cx, cy, ex, ey)
+    lineGrad.addColorStop(0, 'rgba(0,212,255,0.3)')
+    lineGrad.addColorStop(1, 'rgba(0,212,255,0)')
+    ctx.beginPath()
+    ctx.moveTo(cx, cy)
+    ctx.lineTo(ex, ey)
+    ctx.strokeStyle = lineGrad
+    ctx.lineWidth = 2
+    ctx.stroke()
+  }
+
   const drawFlow = () => {
     ctx.clearRect(0, 0, canvas.width, canvas.height)
 
-    // Draw connections
-    connections.forEach(conn => {
-      const fromPoint = map.latLngToContainerPoint([conn.from.lat, conn.from.lng])
-      const toPoint = map.latLngToContainerPoint([conn.to.lat, conn.to.lng])
+    // 1. Radar sweep
+    drawRadarSweep()
 
-      ctx.beginPath()
-      ctx.moveTo(fromPoint.x, fromPoint.y)
-      ctx.lineTo(toPoint.x, toPoint.y)
-      ctx.strokeStyle = `rgba(0, 212, 255, ${conn.intensity * 0.15})`
-      ctx.lineWidth = 1
-      ctx.stroke()
+    // 2. Node pulses
+    drawNodePulse()
+
+    // 3. Flow paths (arcs with animated dashes)
+    flowPaths.forEach(path => {
+      path.dashOffset += 0.4
+      drawArcPath(path.from, path.to, path.color, path.intensity, path.dashOffset)
     })
 
-    // Draw particles
-    particles.forEach(p => {
-      const fromPoint = map.latLngToContainerPoint([p.connection.from.lat, p.connection.from.lng])
-      const toPoint = map.latLngToContainerPoint([p.connection.to.lat, p.connection.to.lng])
-
-      const x = fromPoint.x + (toPoint.x - fromPoint.x) * p.progress
-      const y = fromPoint.y + (toPoint.y - fromPoint.y) * p.progress
-
-      // Glow effect
-      const gradient = ctx.createRadialGradient(x, y, 0, x, y, p.size * 3)
-      gradient.addColorStop(0, p.color)
-      gradient.addColorStop(1, 'transparent')
-      ctx.fillStyle = gradient
-      ctx.beginPath()
-      ctx.arc(x, y, p.size * 3, 0, Math.PI * 2)
-      ctx.fill()
-
-      // Core
-      ctx.fillStyle = '#fff'
-      ctx.beginPath()
-      ctx.arc(x, y, p.size * 0.5, 0, Math.PI * 2)
-      ctx.fill()
-
-      // Move particle
-      p.progress += p.speed
-      if (p.progress >= 1) {
-        p.progress = 0
-        // Occasionally switch connection
-        if (Math.random() > 0.7) {
-          p.connection = connections[Math.floor(Math.random() * connections.length)]
+    // 4. Data packets
+    packets.forEach(packet => {
+      packet.progress += packet.speed
+      if (packet.progress >= 1) {
+        packet.progress = 0
+        // Occasionally switch to a different path
+        if (Math.random() > 0.6) {
+          packet.path = flowPaths[Math.floor(Math.random() * flowPaths.length)]
+          packet.color = packet.path.color
         }
+        // Randomize again
+        packet.speed = 0.003 + Math.random() * 0.004
+        packet.trailLength = 8 + Math.floor(Math.random() * 12)
+        packet.burst = Math.random() > 0.85
       }
+      drawPacket(packet)
     })
+
+    // Update radar angle
+    radarAngle += 0.008
 
     flowAnimationId = requestAnimationFrame(drawFlow)
   }
@@ -613,20 +801,18 @@ const initCharts = () => {
   }
 }
 
+//
 // Simulate BDI real-time updates
 const updateBDI = () => {
   const change = (Math.random() - 0.5) * 20
   bdiData.value.value = Math.max(1500, bdiData.value.value + change)
   bdiData.value.change = ((bdiData.value.value - 1800) / 1800) * 100
 
-  // Update history
   bdiData.value.history = [...bdiData.value.history.slice(1), bdiData.value.value]
 
   if (bdiChart) {
     bdiChart.setOption({
-      series: [{
-        data: bdiData.value.history
-      }]
+      series: [{ data: bdiData.value.history }]
     })
   }
 }
@@ -638,7 +824,6 @@ onMounted(() => {
   initCanvas()
   initCharts()
 
-  // Update BDI every 3 seconds for "real-time" feel
   bdiInterval = setInterval(updateBDI, 3000)
 
   window.addEventListener('resize', () => {
