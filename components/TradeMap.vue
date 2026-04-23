@@ -29,7 +29,11 @@
               </div>
               <div class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#F59E0B]/10 border border-[#F59E0B]/20">
                 <span class="text-[#F59E0B] font-medium">WTI</span>
-                <span class="text-white font-mono">${{ oilData.price }}</span>
+                <span class="text-white font-mono">${{ oilData.wti.toFixed(2) }}</span>
+              </div>
+              <div class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#10B981]/10 border border-[#10B981]/20">
+                <span class="text-[#10B981] font-medium">布伦特</span>
+                <span class="text-white font-mono">${{ oilData.brent.toFixed(2) }}</span>
               </div>
             </div>
           </div>
@@ -39,24 +43,74 @@
               <!-- Ocean background -->
               <rect width="1000" height="500" fill="#0a1628"/>
               
-              <!-- Simplified world landmasses (stylized) -->
-              <g fill="#1a2a4a" stroke="#2a3a6a" stroke-width="0.5">
+              <!-- World Landmasses - Natural Earth Projection (simplified) -->
+              <g fill="#1e3a5f" stroke="#2d5a8a" stroke-width="0.8">
+                <!-- Greenland -->
+                <path d="M340,30 L420,25 L450,50 L440,90 L400,100 L360,90 L330,60 Z"/>
                 <!-- North America -->
-                <path d="M80,60 L220,50 L280,80 L300,120 L280,160 L250,200 L200,220 L160,260 L120,240 L80,200 L60,150 L80,100 Z"/>
+                <path d="M60,60 L120,40 L180,35 L240,45 L280,60 L300,90 L290,130 L270,160 L240,200 L200,230 L160,250 L130,240 L100,210 L80,180 L50,150 L40,110 L50,80 Z"/>
+                <!-- Central America -->
+                <path d="M160,250 L180,260 L190,280 L185,300 L175,310 L165,305 L155,285 Z"/>
                 <!-- South America -->
-                <path d="M180,260 L240,250 L280,280 L300,340 L280,400 L240,440 L200,420 L160,380 L160,300 Z"/>
+                <path d="M200,300 L240,290 L280,300 L310,330 L320,380 L300,430 L270,470 L230,480 L200,450 L180,400 L175,350 L185,320 Z"/>
+                <!-- Caribbean Islands -->
+                <circle cx="220" cy="245" r="6" fill="#1e3a5f"/>
+                <circle cx="235" cy="250" r="5" fill="#1e3a5f"/>
+                <circle cx="245" cy="240" r="4" fill="#1e3a5f"/>
                 <!-- Europe -->
-                <path d="M440,60 L520,50 L560,80 L580,120 L560,160 L520,180 L480,160 L440,140 L420,100 Z"/>
+                <path d="M440,60 L480,50 L520,55 L560,70 L580,95 L570,120 L550,140 L530,150 L510,145 L490,130 L470,140 L450,130 L440,110 L435,85 Z"/>
+                <!-- British Isles -->
+                <path d="M420,65 L435,60 L440,80 L430,95 L418,90 Z"/>
+                <!-- Scandinavia -->
+                <path d="M480,40 L510,35 L525,55 L515,75 L495,80 L480,65 Z"/>
                 <!-- Africa -->
-                <path d="M440,180 L520,170 L560,200 L580,260 L560,340 L520,400 L460,420 L420,380 L400,300 L420,220 Z"/>
-                <!-- Asia (including China/India) -->
-                <path d="M580,60 L780,50 L860,100 L900,180 L880,260 L820,300 L740,280 L680,320 L620,280 L580,220 L560,140 Z"/>
+                <path d="M440,160 L480,150 L520,155 L560,170 L580,200 L590,250 L580,310 L560,360 L530,400 L490,420 L450,410 L420,380 L410,330 L420,270 L430,220 L425,185 Z"/>
+                <!-- Madagascar -->
+                <path d="M600,320 L615,310 L620,350 L610,380 L598,370 Z"/>
+                <!-- Middle East / Arabian Peninsula -->
+                <path d="M560,150 L600,145 L630,160 L640,190 L630,220 L610,230 L585,220 L570,195 L565,170 Z"/>
+                <!-- India -->
+                <path d="M660,200 L700,190 L720,220 L715,270 L700,310 L680,320 L665,300 L660,260 L655,230 Z"/>
+                <!-- Sri Lanka -->
+                <circle cx="700" cy="330" r="8" fill="#1e3a5f"/>
+                <!-- Asia (Russia/Central Asia) -->
+                <path d="M560,40 L650,30 L750,35 L850,45 L920,60 L950,90 L940,130 L900,140 L850,130 L800,120 L750,110 L700,100 L650,95 L600,100 L560,95 L540,75 Z"/>
+                <!-- China/East Asia -->
+                <path d="M740,130 L800,120 L860,130 L900,160 L910,210 L890,250 L850,270 L800,275 L750,265 L720,240 L710,200 L720,160 Z"/>
+                <!-- Japan -->
+                <path d="M900,130 L920,125 L935,150 L930,180 L915,195 L900,180 L895,155 Z"/>
+                <!-- Korea -->
+                <path d="M870,170 L885,165 L890,190 L878,205 L868,195 Z"/>
+                <!-- Taiwan -->
+                <path d="M855,220 L862,215 L865,235 L858,245 L850,235 Z"/>
                 <!-- Southeast Asia -->
-                <path d="M760,300 L840,280 L900,320 L900,380 L840,400 L780,380 L760,340 Z"/>
+                <path d="M760,280 L820,270 L870,280 L900,310 L910,350 L890,380 L850,395 L810,390 L780,370 L760,340 Z"/>
+                <!-- Philippines -->
+                <circle cx="870" cy="290" r="8" fill="#1e3a5f"/>
+                <circle cx="878" cy="310" r="6" fill="#1e3a5f"/>
+                <!-- Indonesia -->
+                <circle cx="780" cy="350" r="7" fill="#1e3a5f"/>
+                <circle cx="800" cy="370" r="9" fill="#1e3a5f"/>
+                <circle cx="830" cy="365" r="8" fill="#1e3a5f"/>
+                <!-- Papua New Guinea -->
+                <circle cx="890" cy="380" r="12" fill="#1e3a5f"/>
                 <!-- Australia -->
-                <path d="M800,380 L900,370 L940,410 L920,460 L860,470 L800,440 Z"/>
-                <!-- Japan/Korea -->
-                <path d="M880,120 L920,110 L940,140 L920,170 L890,160 L880,140 Z"/>
+                <path d="M800,390 L870,380 L920,395 L950,430 L940,470 L900,490 L850,485 L810,460 L790,430 L785,410 Z"/>
+                <!-- New Zealand -->
+                <path d="M950,440 L965,435 L970,460 L958,475 L948,465 Z"/>
+                <path d="M955,480 L970,475 L975,495 L962,505 L952,495 Z"/>
+                <!-- Antarctica (bottom edge) -->
+                <path d="M0,480 L100,475 L200,480 L300,478 L400,482 L500,480 L600,485 L700,482 L800,478 L900,485 L1000,480 L1000,500 L0,500 Z" fill="#1a3050"/>
+              </g>
+              
+              <!-- Ocean grid lines (subtle) -->
+              <g stroke="#1a3050" stroke-width="0.3" fill="none" opacity="0.5">
+                <line x1="0" y1="125" x2="1000" y2="125"/>
+                <line x1="0" y1="250" x2="1000" y2="250"/>
+                <line x1="0" y1="375" x2="1000" y2="375"/>
+                <line x1="250" y1="0" x2="250" y2="500"/>
+                <line x1="500" y1="0" x2="500" y2="500"/>
+                <line x1="750" y1="0" x2="750" y2="500"/>
               </g>
 
               <!-- Major Trade Routes -->
@@ -108,11 +162,14 @@
 
               <!-- Legend inside map -->
               <g transform="translate(30, 400)">
-                <rect x="0" y="0" width="180" height="80" rx="6" fill="rgba(10,22,40,0.9)" stroke="rgba(255,255,255,0.1)"/>
-                <text x="10" y="18" fill="rgba(255,255,255,0.6)" font-size="10">贸易热度</text>
-                <circle cx="20" cy="35" r="5" fill="#00D4FF" opacity="0.9"/><text x="32" y="39" fill="#fff" font-size="10">高密度节点</text>
-                <line x1="10" y1="55" x2="40" y2="55" stroke="#00D4FF" stroke-width="2" stroke-dasharray="4,2"/><text x="48" y="59" fill="#fff" font-size="10">主要航线</text>
-                <line x1="100" y1="55" x2="130" y2="55" stroke="#6366F1" stroke-width="1.5" stroke-dasharray="3,2"/><text x="138" y="59" fill="#fff" font-size="10">次要航线</text>
+                <rect x="0" y="0" width="220" height="85" rx="6" fill="rgba(10,22,40,0.9)" stroke="rgba(255,255,255,0.1)"/>
+                <text x="10" y="18" fill="rgba(255,255,255,0.6)" font-size="10">全球贸易主要航线</text>
+                <circle cx="15" cy="35" r="5" fill="#00D4FF" opacity="0.9"/><text x="25" y="39" fill="#fff" font-size="9">跨太平洋</text>
+                <circle cx="85" cy="35" r="5" fill="#6366F1" opacity="0.9"/><text x="95" y="39" fill="#fff" font-size="9">中欧航线</text>
+                <circle cx="155" cy="35" r="5" fill="#F59E0B" opacity="0.9"/><text x="165" y="39" fill="#fff" font-size="9">能源运输</text>
+                <circle cx="15" cy="58" r="5" fill="#10B981" opacity="0.9"/><text x="25" y="62" fill="#fff" font-size="9">跨大西洋</text>
+                <circle cx="85" cy="58" r="5" fill="#EC4899" opacity="0.9"/><text x="95" y="62" fill="#fff" font-size="9">南美-亚洲</text>
+                <circle cx="155" cy="58" r="5" fill="#8B5CF6" opacity="0.9"/><text x="165" y="62" fill="#fff" font-size="9">澳亚航线</text>
               </g>
             </svg>
           </div>
@@ -140,21 +197,37 @@
             <p class="text-xs text-text-secondary mt-2">数据来源: Baltic Exchange</p>
           </div>
 
-          <!-- Oil Price -->
+          <!-- Oil Price: WTI vs Brent -->
           <div class="glass rounded-2xl p-4">
             <h3 class="text-white font-semibold mb-3 flex items-center gap-2">
               <span class="text-sm">🛢️</span>
-              WTI 原油期货
+              原油期货
             </h3>
-            <div class="flex items-baseline gap-2 mb-1">
-              <span class="text-2xl font-bold text-white font-mono">${{ oilData.price }}</span>
-              <span class="text-sm text-text-secondary">美元/桶</span>
-            </div>
-            <div class="flex items-center gap-2 mb-3">
-              <span :class="oilData.change >= 0 ? 'text-success' : 'text-danger'" class="text-sm font-medium">
-                {{ oilData.change >= 0 ? '↑' : '↓' }} {{ Math.abs(oilData.change).toFixed(2) }}%
-              </span>
-              <span class="text-xs text-text-secondary">日内波动</span>
+            <div class="grid grid-cols-2 gap-4 mb-3">
+              <!-- WTI -->
+              <div class="text-center">
+                <div class="text-[#F59E0B] text-xs font-medium mb-1">WTI (美国)</div>
+                <div class="flex items-baseline justify-center gap-1">
+                  <span class="text-xl font-bold text-white font-mono">${{ oilData.wti.toFixed(2) }}</span>
+                </div>
+                <div class="flex items-center justify-center gap-1 mt-1">
+                  <span :class="oilData.wtiChange >= 0 ? 'text-success' : 'text-danger'" class="text-xs font-medium">
+                    {{ oilData.wtiChange >= 0 ? '↑' : '↓' }}{{ Math.abs(oilData.wtiChange).toFixed(2) }}%
+                  </span>
+                </div>
+              </div>
+              <!-- Brent -->
+              <div class="text-center">
+                <div class="text-[#10B981] text-xs font-medium mb-1">布伦特 (北海)</div>
+                <div class="flex items-baseline justify-center gap-1">
+                  <span class="text-xl font-bold text-white font-mono">${{ oilData.brent.toFixed(2) }}</span>
+                </div>
+                <div class="flex items-center justify-center gap-1 mt-1">
+                  <span :class="oilData.brentChange >= 0 ? 'text-success' : 'text-danger'" class="text-xs font-medium">
+                    {{ oilData.brentChange >= 0 ? '↑' : '↓' }}{{ Math.abs(oilData.brentChange).toFixed(2) }}%
+                  </span>
+                </div>
+              </div>
             </div>
             <div ref="oilChartContainer" class="h-[70px]"></div>
             <p class="text-xs text-text-secondary mt-2">数据来源: EIA / 模拟数据</p>
@@ -299,7 +372,8 @@
         </div>
         <div class="text-text-secondary">
           <span class="text-accent font-medium">BDI</span> 波罗的海航运指数 | 
-          <span class="text-[#F59E0B] font-medium">WTI</span> 原油期货
+          <span class="text-[#F59E0B] font-medium">WTI</span> 美国原油 | 
+          <span class="text-[#10B981] font-medium">布伦特</span> 北海原油
         </div>
       </div>
 
@@ -434,9 +508,12 @@ const bdiData = ref({
 
 // Oil Price Data
 const oilData = ref({
-  price: 78.42,
-  change: 1.23,
-  history: [75.1, 76.3, 77.8, 76.5, 77.2, 78.0, 78.9, 78.42]
+  wti: 78.42,
+  wtiChange: 1.23,
+  wtiHistory: [75.1, 76.3, 77.8, 76.5, 77.2, 78.0, 78.9, 78.42],
+  brent: 82.15,
+  brentChange: 0.87,
+  brentHistory: [78.5, 79.2, 80.1, 81.3, 80.8, 81.5, 82.0, 82.15]
 })
 
 const form = ref({
@@ -542,11 +619,17 @@ const updateBDI = () => {
 }
 
 const updateOil = () => {
-  const change = (Math.random() - 0.5) * 1.5
-  oilData.value.price = Math.max(60, Math.min(120, oilData.value.price + change))
-  oilData.value.change = ((oilData.value.price - 77) / 77) * 100
-  oilData.value.history = [...oilData.value.history.slice(1), oilData.value.price]
-  if (oilChart) oilChart.setOption({ series: [{ data: oilData.value.history }] })
+  const wtiChange = (Math.random() - 0.5) * 1.5
+  oilData.value.wti = Math.max(60, Math.min(120, oilData.value.wti + wtiChange))
+  oilData.value.wtiChange = ((oilData.value.wti - 77) / 77) * 100
+  oilData.value.wtiHistory = [...oilData.value.wtiHistory.slice(1), oilData.value.wti]
+
+  const brentChange = (Math.random() - 0.5) * 1.5
+  oilData.value.brent = Math.max(60, Math.min(130, oilData.value.brent + brentChange))
+  oilData.value.brentChange = ((oilData.value.brent - 81) / 81) * 100
+  oilData.value.brentHistory = [...oilData.value.brentHistory.slice(1), oilData.value.brent]
+
+  if (oilChart) oilChart.setOption({ series: [{ data: oilData.value.wtiHistory }] })
 }
 
 let bdiInterval = null
