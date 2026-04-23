@@ -14,27 +14,64 @@
       </div>
 
       <!-- World Map + Charts -->
-      <div class="grid lg:grid-cols-3 gap-6 mb-12">
-        <!-- Map -->
+      <div class="grid lg:grid-cols-3 gap-6 mb-8">
+        <!-- Map with Data Flow Canvas -->
         <div class="lg:col-span-2 glass rounded-2xl overflow-hidden">
-          <div class="p-4 border-b border-white/5">
+          <div class="p-4 border-b border-white/5 flex items-center justify-between">
             <h3 class="text-white font-semibold flex items-center gap-2">
               <span class="w-2 h-2 rounded-full bg-accent animate-pulse"></span>
               全球贸易热度图
             </h3>
+            <!-- BDI Indicator -->
+            <div class="flex items-center gap-4 text-sm">
+              <div class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-accent/10 border border-accent/20">
+                <span class="text-accent font-medium">BDI</span>
+                <span class="text-white font-mono">{{ bdiData.value.toLocaleString() }}</span>
+                <span :class="bdiData.change >= 0 ? 'text-success' : 'text-danger'" class="font-medium">
+                  {{ bdiData.change >= 0 ? '↑' : '↓' }}{{ Math.abs(bdiData.change).toFixed(1) }}%
+                </span>
+              </div>
+            </div>
           </div>
-          <div ref="mapContainer" class="h-[400px] lg:h-[500px]"></div>
+          <div class="relative">
+            <div ref="mapContainer" class="h-[400px] lg:h-[500px]"></div>
+            <!-- Data Flow Canvas Overlay -->
+            <canvas
+              ref="flowCanvas"
+              class="absolute top-0 left-0 w-full h-full pointer-events-none opacity-70"
+            ></canvas>
+          </div>
         </div>
 
-        <!-- Charts -->
+        <!-- Charts Column -->
         <div class="space-y-6">
+          <!-- BDI Trend Card -->
+          <div class="glass rounded-2xl p-4">
+            <h3 class="text-white font-semibold mb-3 flex items-center gap-2">
+              <span class="text-sm">🚢</span>
+              波罗的海航运指数 (BDI)
+            </h3>
+            <div class="flex items-baseline gap-2 mb-1">
+              <span class="text-3xl font-bold text-white font-mono">{{ bdiData.value.toLocaleString() }}</span>
+              <span class="text-sm text-text-secondary">点位</span>
+            </div>
+            <div class="flex items-center gap-2 mb-3">
+              <span :class="bdiData.change >= 0 ? 'text-success' : 'text-danger'" class="text-sm font-medium">
+                {{ bdiData.change >= 0 ? '↑' : '↓' }} {{ Math.abs(bdiData.change).toFixed(2) }}
+              </span>
+              <span class="text-xs text-text-secondary">较前日</span>
+            </div>
+            <div ref="bdiChartContainer" class="h-[80px]"></div>
+            <p class="text-xs text-text-secondary mt-2">数据来源: Baltic Exchange</p>
+          </div>
+
           <!-- Commodity Index -->
           <div class="glass rounded-2xl p-4">
             <h3 class="text-white font-semibold mb-4 flex items-center gap-2">
               <span class="text-sm">📈</span>
               大宗商品指数
             </h3>
-            <div ref="chartContainer" class="h-[200px]"></div>
+            <div ref="chartContainer" class="h-[160px]"></div>
             <p class="text-xs text-text-secondary mt-2">数据来源: World Bank API</p>
           </div>
 
@@ -44,8 +81,27 @@
               <span class="text-sm">🌍</span>
               区域贸易量占比
             </h3>
-            <div ref="pieChartContainer" class="h-[200px]"></div>
+            <div ref="pieChartContainer" class="h-[160px]"></div>
           </div>
+        </div>
+      </div>
+
+      <!-- Data Flow Legend -->
+      <div class="glass rounded-xl p-4 mb-8 flex flex-wrap items-center justify-center gap-6 text-sm">
+        <div class="flex items-center gap-2">
+          <span class="w-3 h-3 rounded-full bg-accent animate-pulse"></span>
+          <span class="text-text-secondary">高贸易活跃度</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="w-3 h-0.5 bg-gradient-to-r from-accent/50 to-transparent"></span>
+          <span class="text-text-secondary">数据流动路径</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-accent2"></span>
+          <span class="text-text-secondary">航运节点</span>
+        </div>
+        <div class="text-text-secondary">
+          <span class="text-accent font-medium">BDI</span> 波罗的海干散货指数 — 全球贸易先行指标
         </div>
       </div>
 
@@ -218,9 +274,20 @@ import * as echarts from 'echarts'
 const mapContainer = ref(null)
 const chartContainer = ref(null)
 const pieChartContainer = ref(null)
+const bdiChartContainer = ref(null)
+const flowCanvas = ref(null)
 let map = null
 let chart = null
 let pieChart = null
+let bdiChart = null
+let flowAnimationId = null
+
+// BDI Data - Simulated real-time
+const bdiData = ref({
+  value: 1847,
+  change: 2.34,
+  history: [1650, 1680, 1720, 1750, 1780, 1800, 1820, 1847]
+})
 
 const form = ref({
   name: '',
@@ -237,13 +304,30 @@ const submitSuccess = ref(false)
 
 const handleSubmit = async () => {
   isSubmitting.value = true
-  // Simulate API call
   await new Promise(resolve => setTimeout(resolve, 1500))
   isSubmitting.value = false
   submitSuccess.value = true
   form.value = { name: '', company: '', email: '', phone: '', region: '', interest: '', message: '' }
   setTimeout(() => { submitSuccess.value = false }, 5000)
 }
+
+// Trade nodes for data flow visualization
+const tradeNodes = [
+  { name: '中国', lat: 31.23, lng: 121.47, weight: 1.0 },
+  { name: '美国', lat: 40.71, lng: -74.01, weight: 0.9 },
+  { name: '德国', lat: 52.52, lng: 13.41, weight: 0.8 },
+  { name: '日本', lat: 35.68, lng: 139.69, weight: 0.75 },
+  { name: '新加坡', lat: 1.35, lng: 103.82, weight: 0.65 },
+  { name: '迪拜', lat: 25.2, lng: 55.27, weight: 0.6 },
+  { name: '巴西', lat: -23.55, lng: -46.63, weight: 0.55 },
+  { name: '澳大利亚', lat: -33.87, lng: 151.21, weight: 0.5 },
+  { name: '肯尼亚', lat: -1.29, lng: 36.82, weight: 0.4 },
+  { name: '英国', lat: 51.51, lng: -0.13, weight: 0.7 },
+]
+
+// Particles for data flow
+const particles = []
+const connections = []
 
 const initMap = () => {
   if (!mapContainer.value) return
@@ -267,20 +351,7 @@ const initMap = () => {
   }).addTo(map)
 
   // Trade hotspots with heat effect
-  const hotspots = [
-    { lat: 31.23, lng: 121.47, name: '中国', weight: 1.0 },
-    { lat: 40.71, lng: -74.01, name: '美国', weight: 0.9 },
-    { lat: 51.51, lng: -0.13, name: '英国', weight: 0.7 },
-    { lat: 52.52, lng: 13.41, name: '德国', weight: 0.8 },
-    { lat: 35.68, lng: 139.69, name: '日本', weight: 0.75 },
-    { lat: 1.35, lng: 103.82, name: '新加坡', weight: 0.65 },
-    { lat: 25.2, lng: 55.27, name: '迪拜', weight: 0.6 },
-    { lat: -23.55, lng: -46.63, name: '巴西', weight: 0.55 },
-    { lat: -33.87, lng: 151.21, name: '澳大利亚', weight: 0.5 },
-    { lat: -1.29, lng: 36.82, name: '肯尼亚', weight: 0.4 },
-  ]
-
-  hotspots.forEach(hotspot => {
+  tradeNodes.forEach(hotspot => {
     const radius = 20 + hotspot.weight * 30
     const circle = L.circle([hotspot.lat, hotspot.lng], {
       radius: radius * 1000,
@@ -299,9 +370,142 @@ const initMap = () => {
       </div>
     `)
   })
+
+  // Initialize connections between nodes
+  for (let i = 0; i < tradeNodes.length; i++) {
+    for (let j = i + 1; j < tradeNodes.length; j++) {
+      if (Math.random() > 0.5) {
+        connections.push({
+          from: tradeNodes[i],
+          to: tradeNodes[j],
+          intensity: (tradeNodes[i].weight + tradeNodes[j].weight) / 2
+        })
+      }
+    }
+  }
+
+  // Initialize particles
+  for (let i = 0; i < 50; i++) {
+    const conn = connections[Math.floor(Math.random() * connections.length)]
+    particles.push({
+      connection: conn,
+      progress: Math.random(),
+      speed: 0.002 + Math.random() * 0.003,
+      size: 2 + Math.random() * 2,
+      color: Math.random() > 0.5 ? '#00D4FF' : '#6366F1'
+    })
+  }
+}
+
+const initCanvas = () => {
+  if (!flowCanvas.value || !map) return
+
+  const canvas = flowCanvas.value
+  const ctx = canvas.getContext('2d')
+
+  const resize = () => {
+    const rect = mapContainer.value.getBoundingClientRect()
+    canvas.width = rect.width
+    canvas.height = rect.height
+  }
+  resize()
+
+  const drawFlow = () => {
+    ctx.clearRect(0, 0, canvas.width, canvas.height)
+
+    // Draw connections
+    connections.forEach(conn => {
+      const fromPoint = map.latLngToContainerPoint([conn.from.lat, conn.from.lng])
+      const toPoint = map.latLngToContainerPoint([conn.to.lat, conn.to.lng])
+
+      ctx.beginPath()
+      ctx.moveTo(fromPoint.x, fromPoint.y)
+      ctx.lineTo(toPoint.x, toPoint.y)
+      ctx.strokeStyle = `rgba(0, 212, 255, ${conn.intensity * 0.15})`
+      ctx.lineWidth = 1
+      ctx.stroke()
+    })
+
+    // Draw particles
+    particles.forEach(p => {
+      const fromPoint = map.latLngToContainerPoint([p.connection.from.lat, p.connection.from.lng])
+      const toPoint = map.latLngToContainerPoint([p.connection.to.lat, p.connection.to.lng])
+
+      const x = fromPoint.x + (toPoint.x - fromPoint.x) * p.progress
+      const y = fromPoint.y + (toPoint.y - fromPoint.y) * p.progress
+
+      // Glow effect
+      const gradient = ctx.createRadialGradient(x, y, 0, x, y, p.size * 3)
+      gradient.addColorStop(0, p.color)
+      gradient.addColorStop(1, 'transparent')
+      ctx.fillStyle = gradient
+      ctx.beginPath()
+      ctx.arc(x, y, p.size * 3, 0, Math.PI * 2)
+      ctx.fill()
+
+      // Core
+      ctx.fillStyle = '#fff'
+      ctx.beginPath()
+      ctx.arc(x, y, p.size * 0.5, 0, Math.PI * 2)
+      ctx.fill()
+
+      // Move particle
+      p.progress += p.speed
+      if (p.progress >= 1) {
+        p.progress = 0
+        // Occasionally switch connection
+        if (Math.random() > 0.7) {
+          p.connection = connections[Math.floor(Math.random() * connections.length)]
+        }
+      }
+    })
+
+    flowAnimationId = requestAnimationFrame(drawFlow)
+  }
+
+  drawFlow()
+
+  map.on('move', resize)
+  map.on('zoom', resize)
 }
 
 const initCharts = () => {
+  // BDI Mini Chart
+  if (bdiChartContainer.value) {
+    bdiChart = echarts.init(bdiChartContainer.value, 'dark')
+    const bdiOption = {
+      backgroundColor: 'transparent',
+      grid: { top: 5, right: 5, bottom: 5, left: 5 },
+      xAxis: {
+        type: 'category',
+        show: false,
+        data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
+      },
+      yAxis: {
+        type: 'value',
+        show: false,
+        min: 'dataMin'
+      },
+      series: [{
+        type: 'line',
+        smooth: true,
+        symbol: 'none',
+        data: bdiData.value.history,
+        lineStyle: {
+          color: '#00D4FF',
+          width: 2
+        },
+        areaStyle: {
+          color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+            { offset: 0, color: 'rgba(0,212,255,0.4)' },
+            { offset: 1, color: 'rgba(0,212,255,0)' }
+          ])
+        }
+      }]
+    }
+    bdiChart.setOption(bdiOption)
+  }
+
   // Main chart - Trade trends
   if (chartContainer.value) {
     chart = echarts.init(chartContainer.value, 'dark')
@@ -409,13 +613,38 @@ const initCharts = () => {
   }
 }
 
+// Simulate BDI real-time updates
+const updateBDI = () => {
+  const change = (Math.random() - 0.5) * 20
+  bdiData.value.value = Math.max(1500, bdiData.value.value + change)
+  bdiData.value.change = ((bdiData.value.value - 1800) / 1800) * 100
+
+  // Update history
+  bdiData.value.history = [...bdiData.value.history.slice(1), bdiData.value.value]
+
+  if (bdiChart) {
+    bdiChart.setOption({
+      series: [{
+        data: bdiData.value.history
+      }]
+    })
+  }
+}
+
+let bdiInterval = null
+
 onMounted(() => {
   initMap()
+  initCanvas()
   initCharts()
+
+  // Update BDI every 3 seconds for "real-time" feel
+  bdiInterval = setInterval(updateBDI, 3000)
 
   window.addEventListener('resize', () => {
     if (chart) chart.resize()
     if (pieChart) pieChart.resize()
+    if (bdiChart) bdiChart.resize()
   })
 })
 
@@ -423,5 +652,8 @@ onUnmounted(() => {
   if (map) map.remove()
   if (chart) chart.dispose()
   if (pieChart) pieChart.dispose()
+  if (bdiChart) bdiChart.dispose()
+  if (flowAnimationId) cancelAnimationFrame(flowAnimationId)
+  if (bdiInterval) clearInterval(bdiInterval)
 })
 </script>

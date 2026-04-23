@@ -88,6 +88,8 @@ Border:      rgba(255,255,255,0.08)
 
 ### 全球贸易热点图
 - Leaflet 世界地图，热力图展示贸易热度
+- **波罗的海航运指数 (BDI)** 实时数值 + 涨跌幅 + 迷你趋势图（每3秒模拟刷新）
+- **Canvas 数据流动画** — 粒子在贸易节点间流光传输，模拟全球信息实时流动
 - ECharts 商品指数折线图/柱状图
 - 固定留资栏目（国家 + 感兴趣类目 + 联系方式）
 
@@ -108,6 +110,8 @@ Border:      rgba(255,255,255,0.08)
 | EventCard | default / hover / loading |
 | WorldMap | 热力图 + 国家标注 |
 | TradeChart | 折线图 / 柱状图 / 饼图 |
+| BDICard | 实时数值 + 涨跌幅 + 迷你趋势图 |
+| DataFlowCanvas | Canvas粒子流光动画 |
 | LeadForm | default / validating / submitting / success / error |
 | Footer | 静态 |
 
@@ -127,6 +131,7 @@ Border:      rgba(255,255,255,0.08)
 - **UN Comtrade** — 贸易流向数据
 - **CoinGecko** — 大宗商品价格指数（可选）
 - **REST Countries** — 国家基础信息
+- **Baltic Exchange** — BDI 波罗的海航运指数（模拟数据展示）
 
 ### 部署
 - **Vercel** (nuevostec.com)
