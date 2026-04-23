@@ -653,17 +653,17 @@ const initCanvas = () => {
     glowGrad.addColorStop(0, `${packet.color}${Math.floor(packet.alpha * 200).toString(16).padStart(2, '0')}`)
     glowGrad.addColorStop(1, `${packet.color}00`)
     ctx.beginPath()
-    ctx.arc(bx, by, packet.size * 5, 0, Math.PI * 2)
+    ctx.arc(bx, by, Math.max(0.1, packet.size * 5), 0, Math.PI * 2)
     ctx.fillStyle = glowGrad
     ctx.fill()
 
     ctx.beginPath()
-    ctx.arc(bx, by, packet.size, 0, Math.PI * 2)
+    ctx.arc(bx, by, Math.max(0.1, packet.size), 0, Math.PI * 2)
     ctx.fillStyle = `rgba(255,255,255,${packet.alpha * 0.9})`
     ctx.fill()
 
     ctx.beginPath()
-    ctx.arc(bx, by, packet.size * 0.4, 0, Math.PI * 2)
+    ctx.arc(bx, by, Math.max(0.1, packet.size * 0.4), 0, Math.PI * 2)
     ctx.fillStyle = '#ffffff'
     ctx.fill()
   }
@@ -678,7 +678,7 @@ const initCanvas = () => {
         const ringRadius = baseRadius + phase * 30
         const alpha = (1 - phase) * 0.3
         ctx.beginPath()
-        ctx.arc(pt.x, pt.y, ringRadius, 0, Math.PI * 2)
+        ctx.arc(pt.x, pt.y, Math.max(0.1, ringRadius), 0, Math.PI * 2)
         ctx.strokeStyle = `${color}${Math.floor(alpha * 255).toString(16).padStart(2, '0')}`
         ctx.lineWidth = 1
         ctx.stroke()
@@ -689,15 +689,30 @@ const initCanvas = () => {
   const drawRadarSweep = () => {
     const w = canvas.width, h = canvas.height
     const cx = w * 0.5, cy = h * 0.5
-    const maxR = Math.hypot(w, h)
-    const sweepGrad = ctx.createConicGradient(radarAngle, cx, cy)
-    sweepGrad.addColorStop(0, 'rgba(0,212,255,0.04)')
-    sweepGrad.addColorStop(0.08, 'rgba(0,212,255,0.0)')
-    sweepGrad.addColorStop(1, 'rgba(0,212,255,0.0)')
+    const maxR = Math.max(10, Math.hypot(w, h))
     ctx.beginPath()
     ctx.arc(cx, cy, maxR, 0, Math.PI * 2)
-    ctx.fillStyle = sweepGrad
-    ctx.fill()
+    // Fallback for createConicGradient (not supported in all environments)
+    try {
+      const sweepGrad = ctx.createConicGradient(radarAngle, cx, cy)
+      sweepGrad.addColorStop(0, 'rgba(0,212,255,0.06)')
+      sweepGrad.addColorStop(0.1, 'rgba(0,212,255,0.0)')
+      sweepGrad.addColorStop(1, 'rgba(0,212,255,0.0)')
+      ctx.beginPath()
+      ctx.arc(cx, cy, maxR, 0, Math.PI * 2)
+      ctx.fillStyle = sweepGrad
+      ctx.fill()
+    } catch (e) {
+      // Fallback: simple radial gradient
+      const sweepGrad = ctx.createRadialGradient(cx, cy, 0, cx, cy, maxR)
+      sweepGrad.addColorStop(0, 'rgba(0,212,255,0.0)')
+      sweepGrad.addColorStop(0.7, 'rgba(0,212,255,0.0)')
+      sweepGrad.addColorStop(1, 'rgba(0,212,255,0.0)')
+      ctx.beginPath()
+      ctx.arc(cx, cy, maxR, 0, Math.PI * 2)
+      ctx.fillStyle = sweepGrad
+      ctx.fill()
+    }
     const ex = cx + Math.cos(radarAngle) * maxR
     const ey = cy + Math.sin(radarAngle) * maxR
     const lineGrad = ctx.createLinearGradient(cx, cy, ex, ey)
@@ -831,7 +846,7 @@ const initShippingCanvas = () => {
     // Pulse indicator
     const pulseAlpha = 0.3 + 0.3 * Math.sin(vessel.pulse)
     ctx.beginPath()
-    ctx.arc(bx, by, 16 + Math.sin(vessel.pulse) * 3, 0, Math.PI * 2)
+    ctx.arc(bx, by, Math.max(1, 16 + Math.sin(vessel.pulse) * 3), 0, Math.PI * 2)
     ctx.strokeStyle = `rgba(${hexToRgb(vessel.color)},${pulseAlpha})`
     ctx.lineWidth = 1
     ctx.stroke()
