@@ -40,83 +40,148 @@
               <span class="w-3 h-3 rounded-full bg-[#F59E0B] inline-block ml-2"></span> 持平
             </div>
           </div>
-          <div class="relative bg-[#0a1628]">
+          <div class="relative bg-[#07101f]">
             <svg viewBox="0 0 1000 500" class="w-full h-[380px] lg:h-[460px]" xmlns="http://www.w3.org/2000/svg">
-              <!-- Ocean base -->
               <rect width="1000" height="500" fill="#07101f"/>
-              <!-- Ocean grid (latitude/longitude lines) -->
-              <g stroke="rgba(30,58,95,0.5)" stroke-width="0.5" fill="none">
-                <line x1="0" y1="83" x2="1000" y2="83"/><line x1="0" y1="167" x2="1000" y2="167"/><line x1="0" y1="250" x2="1000" y2="250"/><line x1="0" y1="333" x2="1000" y2="333"/><line x1="0" y1="417" x2="1000" y2="417"/>
+              <!-- Ocean grid (lat/lon lines every 30 degrees) -->
+              <g stroke="rgba(30,58,95,0.4)" stroke-width="0.5" fill="none">
+                <line x1="0" y1="42" x2="1000" y2="42"/><line x1="0" y1="83" x2="1000" y2="83"/><line x1="0" y1="125" x2="1000" y2="125"/><line x1="0" y1="167" x2="1000" y2="167"/><line x1="0" y1="208" x2="1000" y2="208"/><line x1="0" y1="250" x2="1000" y2="250"/><line x1="0" y1="292" x2="1000" y2="292"/><line x1="0" y1="333" x2="1000" y2="333"/><line x1="0" y1="375" x2="1000" y2="375"/><line x1="0" y1="417" x2="1000" y2="417"/><line x1="0" y1="458" x2="1000" y2="458"/>
                 <line x1="83" y1="0" x2="83" y2="500"/><line x1="167" y1="0" x2="167" y2="500"/><line x1="250" y1="0" x2="250" y2="500"/><line x1="333" y1="0" x2="333" y2="500"/><line x1="417" y1="0" x2="417" y2="500"/><line x1="500" y1="0" x2="500" y2="500"/><line x1="583" y1="0" x2="583" y2="500"/><line x1="667" y1="0" x2="667" y2="500"/><line x1="750" y1="0" x2="750" y2="500"/><line x1="833" y1="0" x2="833" y2="500"/><line x1="917" y1="0" x2="917" y2="500"/>
               </g>
-              <!-- Equator and prime meridian -->
-              <line x1="0" y1="250" x2="1000" y2="250" stroke="rgba(0,212,255,0.15)" stroke-width="0.8"/><line x1="500" y1="0" x2="500" y2="500" stroke="rgba(0,212,255,0.15)" stroke-width="0.8"/>
-              <!-- World Landmasses - proper continent shapes -->
-              <g fill="#1e3a5f" stroke="#2d5a8a" stroke-width="0.6">
-                <!-- Greenland -->
-                <path d="M305,18 L355,14 L380,30 L375,65 L345,75 L315,65 L295,42 Z"/>
-                <!-- North America -->
-                <path d="M55,72 L95,55 L135,50 L175,52 L205,60 L225,80 L235,108 L228,138 L210,165 L185,185 L155,198 L130,190 L108,172 L82,155 L58,130 L42,100 L48,82 Z"/>
-                <!-- Central America -->
-                <path d="M155,198 L175,205 L185,220 L182,238 L172,245 L160,238 L150,220 Z"/>
-                <!-- Caribbean -->
-                <path d="M198,175 L210,172 L218,178 L215,188 L205,190 L195,185 Z M222,180 L230,178 L236,185 L233,192 L225,192 Z"/>
-                <!-- South America -->
-                <path d="M188,248 L220,242 L255,250 L280,270 L288,300 L282,335 L265,372 L235,402 L205,408 L182,390 L168,355 L162,310 L170,270 Z"/>
-                <!-- Europe -->
-                <path d="M428,72 L458,65 L488,70 L515,82 L528,100 L522,120 L508,132 L492,135 L475,128 L460,132 L445,122 L435,105 Z"/>
+              <!-- Equator and Prime Meridian (highlighted) -->
+              <line x1="0" y1="250" x2="1000" y2="250" stroke="rgba(0,212,255,0.12)" stroke-width="1"/><line x1="500" y1="0" x2="500" y2="500" stroke="rgba(0,212,255,0.12)" stroke-width="1"/>
+              <!-- Latitude labels -->
+              <g fill="rgba(45,90,138,0.5)" font-size="7" font-family="monospace">
+                <text x="5" y="45">60°N</text><text x="5" y="87">45°N</text><text x="5" y="129">30°N</text><text x="5" y="171">15°N</text><text x="5" y="213">EQ</text><text x="5" y="295">15°S</text><text x="5" y="337">30°S</text><text x="5" y="379">45°S</text><text x="5" y="421">60°S</text>
+                <text x="85" y="497">90°W</text><text x="252" y="497">45°W</text><text x="420" y="497">0°</text><text x="585" y="497">45°E</text><text x="752" y="497">90°E</text><text x="918" y="497">135°E</text>
+              </g>
+              <!-- World Landmasses - Detailed Equirectangular Projection -->
+              <g fill="#1a3a5c" stroke="#2d5a8a" stroke-width="0.5">
+                <!-- GREENLAND -->
+                <path d="M305,18 L325,14 L348,16 L365,24 L375,38 L372,52 L365,62 L350,68 L338,72 L322,70 L308,62 L302,50 L298,38 Z"/>
+                <!-- ICELAND -->
+                <path d="M378,55 L392,52 L402,58 L400,68 L390,72 L380,68 Z"/>
+                <!-- NORTH AMERICA - Detailed coastal shape -->
+                <path d="M42,92 L58,85 L78,80 L102,74 L125,70 L148,68 L172,70 L192,76 L208,84 L225,95 L238,108 L245,122 L248,138 L244,155 L232,170 L218,182 L200,192 L182,200 L162,205 L142,207 L122,205 L102,200 L82,190 L65,175 L52,158 L42,140 L35,118 L38,100 Z"/>
+                <!-- CANADA Arctic Archipelago -->
+                <path d="M195,42 L215,38 L238,40 L255,48 L258,60 L248,68 L230,70 L210,65 L195,58 Z"/>
+                <path d="M248,30 L268,26 L285,30 L290,42 L280,50 L262,52 L245,46 Z"/>
+                <path d="M278,18 L298,14 L318,18 L322,30 L310,38 L290,38 L275,30 Z"/>
+                <!-- CENTRAL AMERICA & CARIBBEAN -->
+                <path d="M158,202 L175,208 L190,218 L192,230 L185,240 L172,242 L162,232 L155,220 Z"/>
+                <path d="M198,178 L212,175 L222,180 L220,188 L212,192 L202,190 Z"/>
+                <path d="M222,182 L235,180 L242,188 L238,196 L228,198 Z"/>
+                <path d="M245,175 L258,172 L265,180 L262,190 L252,192 L242,188 Z"/>
+                <!-- SOUTH AMERICA -->
+                <path d="M192,248 L215,242 L242,240 L268,245 L288,255 L302,270 L308,290 L308,315 L300,342 L285,368 L262,395 L235,412 L205,415 L180,402 L162,375 L152,342 L150,305 L155,272 L168,255 Z"/>
+                <!-- FALKLAND ISLANDS -->
+                <path d="M235,418 L242,415 L248,422 L244,430 L235,432 Z"/>
+                <!-- EUROPE - Detailed peninsulae and bays -->
+                <path d="M422,78 L438,72 L455,70 L470,72 L482,78 L490,88 L492,100 L485,112 L472,120 L458,125 L445,124 L432,118 L425,108 Z"/>
                 <!-- British Isles -->
-                <path d="M412,78 L422,74 L428,85 L422,95 L414,93 Z"/>
+                <path d="M410,78 L420,74 L426,82 L424,92 L415,96 L406,90 Z"/>
+                <path d="M404,82 L412,80 L415,88 L410,94 L402,92 Z"/>
                 <!-- Scandinavia -->
-                <path d="M478,42 L500,38 L515,52 L508,70 L492,75 L478,65 Z"/>
-                <!-- Iceland -->
-                <path d="M380,58 L395,56 L402,64 L395,70 L382,68 Z"/>
-                <!-- Africa -->
-                <path d="M428,148 L468,140 L510,145 L548,158 L565,185 L572,218 L565,258 L548,298 L522,335 L488,358 L455,360 L428,338 L415,298 L412,252 L418,205 Z"/>
+                <path d="M478,42 L495,38 L512,42 L520,55 L514,68 L498,74 L482,72 L472,62 L474,50 Z"/>
+                <!-- Svalbard -->
+                <path d="M498,22 L510,18 L518,24 L514,34 L502,36 Z"/>
+                <!-- Novaya Zemlya -->
+                <path d="M562,18 L572,14 L578,22 L574,32 L564,34 Z"/>
+                <!-- AFRICA - Detailed shape with Horn, Gulf of Guinea -->
+                <path d="M425,152 L452,145 L478,142 L508,145 L535,152 L555,162 L568,178 L575,198 L575,220 L570,245 L558,270 L542,295 L520,318 L495,338 L468,352 L440,358 L415,352 L398,335 L390,310 L388,280 L392,248 L402,218 L412,188 Z"/>
                 <!-- Madagascar -->
-                <path d="M572,268 L582,262 L588,285 L582,305 L572,302 Z"/>
-                <!-- Middle East / Arabian Peninsula -->
-                <path d="M545,140 L575,135 L600,145 L610,170 L600,198 L582,205 L562,195 L552,170 L548,152 Z"/>
-                <!-- India / South Asia -->
-                <path d="M638,152 L668,148 L685,172 L682,210 L668,245 L650,255 L635,238 L628,208 L632,175 Z"/>
+                <path d="M572,268 L582,262 L588,278 L585,298 L578,315 L568,318 L562,302 Z"/>
+                <!-- Azores -->
+                <path d="M378,148 L384,145 L388,150 L385,157 L378,158 Z"/>
+                <!-- Canary Islands -->
+                <path d="M375,182 L382,180 L386,186 L382,192 L375,192 Z"/>
+                <!-- MIDDLE EAST & ARABIAN PENINSULA -->
+                <path d="M545,142 L562,138 L580,140 L595,148 L605,160 L608,175 L600,190 L588,200 L572,205 L558,198 L550,182 L545,165 Z"/>
+                <!-- Persian Gulf / Iran -->
+                <path d="M595,155 L615,148 L632,150 L645,160 L648,175 L640,188 L625,195 L610,192 L598,180 L592,165 Z"/>
+                <!-- SOUTH ASIA - Indian Subcontinent -->
+                <path d="M638,152 L658,148 L678,152 L695,165 L702,182 L702,205 L695,228 L680,252 L662,268 L645,278 L630,272 L620,252 L615,225 L618,198 L625,172 Z"/>
                 <!-- Sri Lanka -->
-                <path d="M658,262 L664,258 L668,270 L664,278 L656,274 Z"/>
-                <!-- Russia / Northern Asia -->
-                <path d="M548,38 L615,30 L700,32 L785,38 L858,48 L918,62 L938,90 L928,120 L888,130 L838,125 L788,118 L738,112 L688,108 L638,108 L590,108 L560,92 L540,70 Z"/>
-                <!-- China / East Asia -->
-                <path d="M732,118 L788,112 L842,118 L878,140 L888,172 L878,210 L852,232 L812,240 L768,238 L735,220 L720,188 L722,150 Z"/>
-                <!-- Japan -->
-                <path d="M882,118 L895,115 L902,135 L898,162 L885,175 L875,162 L875,140 Z"/>
-                <!-- Korea -->
-                <path d="M862,152 L872,148 L878,165 L872,180 L862,178 Z"/>
-                <!-- Taiwan -->
-                <path d="M852,188 L858,185 L862,200 L856,210 L848,202 Z"/>
-                <!-- Southeast Asia -->
-                <path d="M745,230 L782,225 L815,232 L840,252 L848,280 L838,308 L812,320 L782,318 L758,302 L742,275 Z"/>
-                <!-- Philippines -->
-                <path d="M848,238 L858,235 L862,252 L858,268 L848,265 Z M852,272 L862,270 L868,282 L862,292 L852,288 Z"/>
-                <!-- Indonesia -->
-                <path d="M758,285 L775,282 L790,290 L798,308 L790,325 L772,325 L758,312 Z M808,298 L825,295 L835,312 L825,328 L808,325 Z M840,295 L858,292 L868,310 L858,325 L840,322 Z"/>
+                <path d="M660,278 L668,274 L672,284 L668,298 L660,300 L654,288 Z"/>
+                <!-- SOUTHEAST ASIA - Detailed peninsula and islands -->
+                <path d="M745,232 L765,228 L785,230 L802,240 L812,255 L812,275 L805,295 L790,308 L770,312 L752,305 L742,285 Z"/>
+                <!-- Indonesian Archipelago - Borneo -->
+                <path d="M762,272 L785,265 L805,270 L818,282 L815,298 L798,308 L778,310 L762,302 Z"/>
+                <!-- Java -->
+                <path d="M758,308 L778,304 L798,308 L808,320 L800,334 L782,338 L762,332 Z"/>
+                <!-- Sumatra -->
+                <path d="M728,282 L752,276 L775,280 L792,290 L790,305 L772,312 L750,312 L728,305 Z"/>
+                <!-- Sulawesi -->
+                <path d="M808,282 L822,278 L835,288 L830,302 L815,308 L805,300 Z"/>
                 <!-- Papua New Guinea -->
-                <path d="M868,305 L890,302 L905,315 L900,335 L882,340 L868,330 Z"/>
-                <!-- Australia -->
-                <path d="M785,348 L838,340 L882,352 L905,380 L898,412 L865,432 L825,432 L790,412 L772,385 Z"/>
-                <!-- New Zealand -->
-                <path d="M918,392 L930,388 L936,405 L928,420 L916,418 Z M920,428 L932,424 L940,440 L930,452 L918,448 Z"/>
-                <!-- Antarctica (bottom edge) -->
-                <path d="M0,458 Q250,445 500,450 Q750,455 1000,450 L1000,500 L0,500 Z" fill="#1a3050"/>
+                <path d="M862,305 L882,298 L902,305 L912,320 L908,342 L888,352 L868,348 L855,330 Z"/>
+                <!-- PHILIPPINES -->
+                <path d="M852,248 L862,244 L868,255 L865,268 L855,275 Z"/>
+                <path d="M855,282 L865,278 L872,290 L868,305 L858,310 Z"/>
+                <!-- RUSSIA / NORTHERN EURASIA - Detailed with major indentations -->
+                <path d="M545,38 L572,32 L615,28 L662,26 L712,30 L762,36 L808,44 L852,52 L888,62 L918,75 L938,92 L935,115 L918,132 L882,140 L840,138 L798,132 L755,125 L715,120 L675,118 L638,118 L598,120 L562,118 L540,108 L530,88 Z"/>
+                <!-- Novaya Zemlya / Franz Josef -->
+                <path d="M548,18 L560,12 L572,18 L568,32 L554,36 Z"/>
+                <!-- EAST ASIA - China, Korea, Japan -->
+                <path d="M728,118 L762,112 L798,115 L830,122 L855,135 L868,152 L872,175 L868,200 L852,225 L822,242 L790,250 L758,248 L735,235 L720,210 L715,182 L718,152 Z"/>
+                <!-- Korea Peninsula -->
+                <path d="M858,158 L866,154 L874,165 L872,182 L862,190 L854,182 Z"/>
+                <!-- Taiwan -->
+                <path d="M852,198 L860,194 L866,208 L860,224 L852,226 L846,214 Z"/>
+                <!-- Japan - Honshu main island -->
+                <path d="M878,122 L892,118 L902,132 L900,155 L892,172 L880,182 L870,178 L868,158 L872,138 Z"/>
+                <!-- Hokkaido -->
+                <path d="M888,102 L902,98 L912,108 L908,122 L895,128 L885,122 Z"/>
+                <!-- Kyushu -->
+                <path d="M882,172 L892,168 L898,178 L894,190 L884,194 Z"/>
+                <!-- Sakhalin -->
+                <path d="M905,95 L918,90 L928,98 L924,112 L912,118 L902,114 Z"/>
+                <!-- KURIL ISLANDS -->
+                <path d="M912,108 L920,105 L926,112 L922,122 L914,124 Z"/>
+                <!-- AUSTRALIA -->
+                <path d="M782,352 L810,345 L842,342 L872,350 L898,365 L908,388 L905,415 L885,438 L855,450 L822,455 L795,445 L775,425 L768,400 L772,375 Z"/>
+                <!-- Tasmania -->
+                <path d="M920,438 L928,434 L934,448 L928,462 L918,462 Z"/>
+                <!-- NEW ZEALAND -->
+                <path d="M948,385 L960,380 L968,395 L962,415 L950,420 Z"/>
+                <path d="M945,428 L956,424 L962,440 L955,455 L944,455 Z"/>
+                <!-- ANTARCTICA (southern edge) -->
+                <path d="M0,460 Q200,448 400,452 Q600,456 800,450 Q900,448 1000,452 L1000,500 L0,500 Z" fill="#162840"/>
+                <!-- Subcontinent overlays -->
+                <!-- Alaska -->
+                <path d="M55,65 L75,58 L92,60 L100,72 L90,82 L70,85 L55,78 Z"/>
+                <!-- Kamchatka -->
+                <path d="M905,80 L918,75 L930,82 L928,98 L915,105 L902,100 Z"/>
               </g>
-              <!-- Country borders overlay for depth -->
-              <g fill="none" stroke="rgba(45,90,138,0.4)" stroke-width="0.4">
-                <!-- Major country divisions -->
-                <path d="M732,118 L732,240"/><path d="M788,112 L788,240"/><path d="M838,125 L838,232"/>
-                <path d="M638,148 L638,255"/><path d="M668,148 L668,255"/>
-                <path d="M548,38 L548,148"/><path d="M615,30 L615,148"/>
-                <path d="M428,72 L428,148"/><path d="M488,70 L488,148"/>
-                <path d="M55,72 L235,108"/><path d="M235,108 L235,185"/>
-                <path d="M188,248 L288,300"/><path d="M288,300 L288,402"/>
-                <path d="M428,148 L572,218"/><path d="M572,218 L572,360"/>
+              <!-- Major country border lines -->
+              <g fill="none" stroke="rgba(45,90,138,0.6)" stroke-width="0.6">
+                <!-- North America borders -->
+                <path d="M148,68 L148,207"/><path d="M225,95 L225,80"/>
+                <!-- South America borders -->
+                <path d="M242,240 L242,415"/>
+                <!-- Africa borders -->
+                <path d="M508,145 L508,352"/>
+                <!-- Europe/Asia border -->
+                <path d="M545,38 L545,118"/><path d="M638,118 L638,152"/><path d="M728,118 L728,248"/>
+                <!-- India border -->
+                <path d="M638,152 L638,278"/>
+                <!-- Australia border -->
+                <path d="M810,345 L810,455"/>
+                <!-- Country divisions -->
+                <path d="M858,158 L858,190"/><path d="M878,122 L878,194"/>
+                <path d="M615,148 L615,192"/><path d="M595,155 L595,205"/>
+                <path d="M468,142 L468,358"/><path d="M425,152 L425,352"/>
+                <path d="M780,228 L780,312"/><path d="M762,272 L762,312"/>
+                <path d="M545,38 L728,38"/><path d="M638,118 L862,122"/>
               </g>
+              <!-- Ocean depth gradient overlay -->
+              <defs>
+                <radialGradient id="oceanGlow" cx="50%" cy="50%" r="70%">
+                  <stop offset="0%" stop-color="rgba(10,30,60,0)"/>
+                  <stop offset="100%" stop-color="rgba(7,16,31,0.5)"/>
+                </radialGradient>
+              </defs>
+              <rect width="1000" height="500" fill="url(#oceanGlow)"/>
 
               <!-- Market Bubbles -->
               <!-- New York S&P500 -->
