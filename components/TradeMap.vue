@@ -42,47 +42,80 @@
           </div>
           <div class="relative bg-[#0a1628]">
             <svg viewBox="0 0 1000 500" class="w-full h-[380px] lg:h-[460px]" xmlns="http://www.w3.org/2000/svg">
-              <rect width="1000" height="500" fill="#0a1628"/>
-              <g fill="#1e3a5f" stroke="#2d5a8a" stroke-width="0.8">
-                <path d="M340,30 L420,25 L450,50 L440,90 L400,100 L360,90 L330,60 Z"/>
-                <path d="M60,60 L120,40 L180,35 L240,45 L280,60 L300,90 L290,130 L270,160 L240,200 L200,230 L160,250 L130,240 L100,210 L80,180 L50,150 L40,110 L50,80 Z"/>
-                <path d="M160,250 L180,260 L190,280 L185,300 L175,310 L165,305 L155,285 Z"/>
-                <path d="M200,300 L240,290 L280,300 L310,330 L320,380 L300,430 L270,470 L230,480 L200,450 L180,400 L175,350 L185,320 Z"/>
-                <circle cx="220" cy="245" r="6" fill="#1e3a5f"/>
-                <circle cx="235" cy="250" r="5" fill="#1e3a5f"/>
-                <circle cx="245" cy="240" r="4" fill="#1e3a5f"/>
-                <path d="M440,60 L480,50 L520,55 L560,70 L580,95 L570,120 L550,140 L530,150 L510,145 L490,130 L470,140 L450,130 L440,110 L435,85 Z"/>
-                <path d="M420,65 L435,60 L440,80 L430,95 L418,90 Z"/>
-                <path d="M480,40 L510,35 L525,55 L515,75 L495,80 L480,65 Z"/>
-                <path d="M440,160 L480,150 L520,155 L560,170 L580,200 L590,250 L580,310 L560,360 L530,400 L490,420 L450,410 L420,380 L410,330 L420,270 L430,220 L425,185 Z"/>
-                <path d="M600,320 L615,310 L620,350 L610,380 L598,370 Z"/>
-                <path d="M560,150 L600,145 L630,160 L640,190 L630,220 L610,230 L585,220 L570,195 L565,170 Z"/>
-                <path d="M660,200 L700,190 L720,220 L715,270 L700,310 L680,320 L665,300 L660,260 L655,230 Z"/>
-                <circle cx="700" cy="330" r="8" fill="#1e3a5f"/>
-                <path d="M560,40 L650,30 L750,35 L850,45 L920,60 L950,90 L940,130 L900,140 L850,130 L800,120 L750,110 L700,100 L650,95 L600,100 L560,95 L540,75 Z"/>
-                <path d="M740,130 L800,120 L860,130 L900,160 L910,210 L890,250 L850,270 L800,275 L750,265 L720,240 L710,200 L720,160 Z"/>
-                <path d="M900,130 L920,125 L935,150 L930,180 L915,195 L900,180 L895,155 Z"/>
-                <path d="M870,170 L885,165 L890,190 L878,205 L868,195 Z"/>
-                <path d="M855,220 L862,215 L865,235 L858,245 L850,235 Z"/>
-                <path d="M760,280 L820,270 L870,280 L900,310 L910,350 L890,380 L850,395 L810,390 L780,370 L760,340 Z"/>
-                <circle cx="870" cy="290" r="8" fill="#1e3a5f"/>
-                <circle cx="878" cy="310" r="6" fill="#1e3a5f"/>
-                <circle cx="780" cy="350" r="7" fill="#1e3a5f"/>
-                <circle cx="800" cy="370" r="9" fill="#1e3a5f"/>
-                <circle cx="830" cy="365" r="8" fill="#1e3a5f"/>
-                <circle cx="890" cy="380" r="12" fill="#1e3a5f"/>
-                <path d="M800,390 L870,380 L920,395 L950,430 L940,470 L900,490 L850,485 L810,460 L790,430 L785,410 Z"/>
-                <path d="M950,440 L965,435 L970,460 L958,475 L948,465 Z"/>
-                <path d="M955,480 L970,475 L975,495 L962,505 L952,495 Z"/>
-                <path d="M0,480 L100,475 L200,480 L300,478 L400,482 L500,480 L600,485 L700,482 L800,478 L900,485 L1000,480 L1000,500 L0,500 Z" fill="#1a3050"/>
+              <!-- Ocean base -->
+              <rect width="1000" height="500" fill="#07101f"/>
+              <!-- Ocean grid (latitude/longitude lines) -->
+              <g stroke="rgba(30,58,95,0.5)" stroke-width="0.5" fill="none">
+                <line x1="0" y1="83" x2="1000" y2="83"/><line x1="0" y1="167" x2="1000" y2="167"/><line x1="0" y1="250" x2="1000" y2="250"/><line x1="0" y1="333" x2="1000" y2="333"/><line x1="0" y1="417" x2="1000" y2="417"/>
+                <line x1="83" y1="0" x2="83" y2="500"/><line x1="167" y1="0" x2="167" y2="500"/><line x1="250" y1="0" x2="250" y2="500"/><line x1="333" y1="0" x2="333" y2="500"/><line x1="417" y1="0" x2="417" y2="500"/><line x1="500" y1="0" x2="500" y2="500"/><line x1="583" y1="0" x2="583" y2="500"/><line x1="667" y1="0" x2="667" y2="500"/><line x1="750" y1="0" x2="750" y2="500"/><line x1="833" y1="0" x2="833" y2="500"/><line x1="917" y1="0" x2="917" y2="500"/>
               </g>
-              <g stroke="#1a3050" stroke-width="0.3" fill="none" opacity="0.5">
-                <line x1="0" y1="125" x2="1000" y2="125"/>
-                <line x1="0" y1="250" x2="1000" y2="250"/>
-                <line x1="0" y1="375" x2="1000" y2="375"/>
-                <line x1="250" y1="0" x2="250" y2="500"/>
-                <line x1="500" y1="0" x2="500" y2="500"/>
-                <line x1="750" y1="0" x2="750" y2="500"/>
+              <!-- Equator and prime meridian -->
+              <line x1="0" y1="250" x2="1000" y2="250" stroke="rgba(0,212,255,0.15)" stroke-width="0.8"/><line x1="500" y1="0" x2="500" y2="500" stroke="rgba(0,212,255,0.15)" stroke-width="0.8"/>
+              <!-- World Landmasses - proper continent shapes -->
+              <g fill="#1e3a5f" stroke="#2d5a8a" stroke-width="0.6">
+                <!-- Greenland -->
+                <path d="M305,18 L355,14 L380,30 L375,65 L345,75 L315,65 L295,42 Z"/>
+                <!-- North America -->
+                <path d="M55,72 L95,55 L135,50 L175,52 L205,60 L225,80 L235,108 L228,138 L210,165 L185,185 L155,198 L130,190 L108,172 L82,155 L58,130 L42,100 L48,82 Z"/>
+                <!-- Central America -->
+                <path d="M155,198 L175,205 L185,220 L182,238 L172,245 L160,238 L150,220 Z"/>
+                <!-- Caribbean -->
+                <path d="M198,175 L210,172 L218,178 L215,188 L205,190 L195,185 Z M222,180 L230,178 L236,185 L233,192 L225,192 Z"/>
+                <!-- South America -->
+                <path d="M188,248 L220,242 L255,250 L280,270 L288,300 L282,335 L265,372 L235,402 L205,408 L182,390 L168,355 L162,310 L170,270 Z"/>
+                <!-- Europe -->
+                <path d="M428,72 L458,65 L488,70 L515,82 L528,100 L522,120 L508,132 L492,135 L475,128 L460,132 L445,122 L435,105 Z"/>
+                <!-- British Isles -->
+                <path d="M412,78 L422,74 L428,85 L422,95 L414,93 Z"/>
+                <!-- Scandinavia -->
+                <path d="M478,42 L500,38 L515,52 L508,70 L492,75 L478,65 Z"/>
+                <!-- Iceland -->
+                <path d="M380,58 L395,56 L402,64 L395,70 L382,68 Z"/>
+                <!-- Africa -->
+                <path d="M428,148 L468,140 L510,145 L548,158 L565,185 L572,218 L565,258 L548,298 L522,335 L488,358 L455,360 L428,338 L415,298 L412,252 L418,205 Z"/>
+                <!-- Madagascar -->
+                <path d="M572,268 L582,262 L588,285 L582,305 L572,302 Z"/>
+                <!-- Middle East / Arabian Peninsula -->
+                <path d="M545,140 L575,135 L600,145 L610,170 L600,198 L582,205 L562,195 L552,170 L548,152 Z"/>
+                <!-- India / South Asia -->
+                <path d="M638,152 L668,148 L685,172 L682,210 L668,245 L650,255 L635,238 L628,208 L632,175 Z"/>
+                <!-- Sri Lanka -->
+                <path d="M658,262 L664,258 L668,270 L664,278 L656,274 Z"/>
+                <!-- Russia / Northern Asia -->
+                <path d="M548,38 L615,30 L700,32 L785,38 L858,48 L918,62 L938,90 L928,120 L888,130 L838,125 L788,118 L738,112 L688,108 L638,108 L590,108 L560,92 L540,70 Z"/>
+                <!-- China / East Asia -->
+                <path d="M732,118 L788,112 L842,118 L878,140 L888,172 L878,210 L852,232 L812,240 L768,238 L735,220 L720,188 L722,150 Z"/>
+                <!-- Japan -->
+                <path d="M882,118 L895,115 L902,135 L898,162 L885,175 L875,162 L875,140 Z"/>
+                <!-- Korea -->
+                <path d="M862,152 L872,148 L878,165 L872,180 L862,178 Z"/>
+                <!-- Taiwan -->
+                <path d="M852,188 L858,185 L862,200 L856,210 L848,202 Z"/>
+                <!-- Southeast Asia -->
+                <path d="M745,230 L782,225 L815,232 L840,252 L848,280 L838,308 L812,320 L782,318 L758,302 L742,275 Z"/>
+                <!-- Philippines -->
+                <path d="M848,238 L858,235 L862,252 L858,268 L848,265 Z M852,272 L862,270 L868,282 L862,292 L852,288 Z"/>
+                <!-- Indonesia -->
+                <path d="M758,285 L775,282 L790,290 L798,308 L790,325 L772,325 L758,312 Z M808,298 L825,295 L835,312 L825,328 L808,325 Z M840,295 L858,292 L868,310 L858,325 L840,322 Z"/>
+                <!-- Papua New Guinea -->
+                <path d="M868,305 L890,302 L905,315 L900,335 L882,340 L868,330 Z"/>
+                <!-- Australia -->
+                <path d="M785,348 L838,340 L882,352 L905,380 L898,412 L865,432 L825,432 L790,412 L772,385 Z"/>
+                <!-- New Zealand -->
+                <path d="M918,392 L930,388 L936,405 L928,420 L916,418 Z M920,428 L932,424 L940,440 L930,452 L918,448 Z"/>
+                <!-- Antarctica (bottom edge) -->
+                <path d="M0,458 Q250,445 500,450 Q750,455 1000,450 L1000,500 L0,500 Z" fill="#1a3050"/>
+              </g>
+              <!-- Country borders overlay for depth -->
+              <g fill="none" stroke="rgba(45,90,138,0.4)" stroke-width="0.4">
+                <!-- Major country divisions -->
+                <path d="M732,118 L732,240"/><path d="M788,112 L788,240"/><path d="M838,125 L838,232"/>
+                <path d="M638,148 L638,255"/><path d="M668,148 L668,255"/>
+                <path d="M548,38 L548,148"/><path d="M615,30 L615,148"/>
+                <path d="M428,72 L428,148"/><path d="M488,70 L488,148"/>
+                <path d="M55,72 L235,108"/><path d="M235,108 L235,185"/>
+                <path d="M188,248 L288,300"/><path d="M288,300 L288,402"/>
+                <path d="M428,148 L572,218"/><path d="M572,218 L572,360"/>
               </g>
 
               <!-- Market Bubbles -->
@@ -254,16 +287,6 @@
             {{ idx.change >= 0 ? '▲' : '▼' }} {{ Math.abs(idx.change).toFixed(2) }}%
           </div>
         </div>
-      </div>
-
-      <!-- Performance Comparison Chart -->
-      <div class="glass rounded-2xl p-6 mb-6">
-        <h3 class="text-white font-semibold mb-4 flex items-center gap-2">
-          <span class="text-lg">📊</span>
-          主要指数涨跌幅对比（2024年以来）
-        </h3>
-        <div ref="compareChartContainer" class="h-[220px]"></div>
-        <p class="text-xs text-text-secondary mt-3 text-right">数据来源：各交易所公开数据 / 模拟数据</p>
       </div>
 
       <!-- Market Summary Table -->
@@ -465,13 +488,11 @@ const sp500ChartContainer = ref(null)
 const nasdaqChartContainer = ref(null)
 const csi300ChartContainer = ref(null)
 const nikkeiChartContainer = ref(null)
-const compareChartContainer = ref(null)
 
 let sp500Chart = null
 let nasdaqChart = null
 let csi300Chart = null
 let nikkeiChart = null
-let compareChart = null
 
 // Market data
 const marketData = ref({
@@ -599,53 +620,6 @@ const initCharts = () => {
     nikkeiChart = echarts.init(nikkeiChartContainer.value, 'dark')
     nikkeiChart.setOption(makeOption(marketData.value.nikkei.history, '#10B981'))
   }
-  if (compareChartContainer.value) {
-    compareChart = echarts.init(compareChartContainer.value, 'dark')
-    compareChart.setOption({
-      backgroundColor: 'transparent',
-      grid: { top: 20, right: 20, bottom: 40, left: 50 },
-      legend: { bottom: 0, textStyle: { color: '#94A3B8', fontSize: 10 }, itemWidth: 12, itemHeight: 8 },
-      xAxis: {
-        type: 'category',
-        data: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
-        axisLine: { lineStyle: { color: 'rgba(255,255,255,0.1)' } },
-        axisLabel: { color: '#94A3B8', fontSize: 9 },
-      },
-      yAxis: {
-        type: 'value',
-        axisLine: { show: false },
-        splitLine: { lineStyle: { color: 'rgba(255,255,255,0.05)' } },
-        axisLabel: { color: '#94A3B8', fontSize: 9, formatter: v => v + '%' },
-      },
-      series: [
-        {
-          name: '标普500', type: 'line', smooth: true, symbol: 'circle', symbolSize: 4,
-          data: [0, 1.2, 2.8, 3.5, 4.2, 5.1, 6.3, 7.0, 7.8, 8.1, 8.3, 8.42],
-          lineStyle: { color: '#00D4FF', width: 2 }, itemStyle: { color: '#00D4FF' },
-        },
-        {
-          name: '纳斯达克', type: 'line', smooth: true, symbol: 'circle', symbolSize: 4,
-          data: [0, 1.8, 3.5, 4.8, 6.2, 7.8, 9.0, 10.2, 11.0, 11.8, 12.1, 12.35],
-          lineStyle: { color: '#6366F1', width: 2 }, itemStyle: { color: '#6366F1' },
-        },
-        {
-          name: '沪深300', type: 'line', smooth: true, symbol: 'circle', symbolSize: 4,
-          data: [0, -0.5, 0.8, 1.2, 1.5, 1.8, 2.0, 2.1, 2.0, 2.15, 2.2, 2.18],
-          lineStyle: { color: '#EF4444', width: 2 }, itemStyle: { color: '#EF4444' },
-        },
-        {
-          name: '日经225', type: 'line', smooth: true, symbol: 'circle', symbolSize: 4,
-          data: [0, 1.5, 3.2, 5.0, 7.2, 9.0, 11.0, 12.5, 14.0, 14.8, 15.4, 15.62],
-          lineStyle: { color: '#10B981', width: 2 }, itemStyle: { color: '#10B981' },
-        },
-        {
-          name: '富时100', type: 'line', smooth: true, symbol: 'circle', symbolSize: 4,
-          data: [0, 0.5, 1.2, 1.8, 2.3, 2.9, 3.4, 3.7, 3.9, 4.0, 4.1, 4.15],
-          lineStyle: { color: '#F59E0B', width: 2 }, itemStyle: { color: '#F59E0B' },
-        },
-      ],
-    })
-  }
 }
 
 const updateMarket = () => {
@@ -686,7 +660,7 @@ onMounted(() => {
     nasdaqChart?.resize()
     csi300Chart?.resize()
     nikkeiChart?.resize()
-    compareChart?.resize()
+
   })
 })
 
@@ -695,7 +669,7 @@ onUnmounted(() => {
   nasdaqChart?.dispose()
   csi300Chart?.dispose()
   nikkeiChart?.dispose()
-  compareChart?.dispose()
+
   if (marketInterval) clearInterval(marketInterval)
 })
 </script>
