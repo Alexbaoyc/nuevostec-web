@@ -50,7 +50,7 @@
           </svg>
         </a>
         <a href="#trade-map" class="btn-secondary text-base">
-          查看贸易数据
+          资本市场咨询
         </a>
       </div>
     </div>

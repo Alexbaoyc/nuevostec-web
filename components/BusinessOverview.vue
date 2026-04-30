@@ -79,11 +79,11 @@ const cards = [
   },
   {
     id: 'trade-map',
-    icon: '📊',
-    title: '全球贸易热点图',
-    description: '实时追踪全球贸易热点，动态可视化商品指数与市场趋势，智能匹配商机，让决策有据可依。',
-    gradient: 'linear-gradient(135deg, #10B98120, #10B98105)',
-    tags: ['实时数据', '贸易分析', '商品指数', '商机洞察'],
+    icon: '💹',
+    title: '全球资本市场咨询服务提供',
+    description: '全球主要资本市场表现追踪，境内外贸易现金流动，主要资本市场PRE IPO咨询。',
+    gradient: 'linear-gradient(135deg, #6366F120, #6366F105)',
+    tags: ['资本市场', 'PRE IPO', '现金流动', '并购咨询'],
   },
 ]
 </script>

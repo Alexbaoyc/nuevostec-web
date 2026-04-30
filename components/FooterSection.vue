@@ -32,14 +32,14 @@
           <ul class="space-y-3">
             <li><a href="#outbound" class="text-text-secondary text-sm hover:text-accent transition-colors">企业出海</a></li>
             <li><a href="#cloud-ai" class="text-text-secondary text-sm hover:text-accent transition-colors">企业上云</a></li>
-            <li><a href="#trade-map" class="text-text-secondary text-sm hover:text-accent transition-colors">全球贸易热点图</a></li>
+            <li><a href="#trade-map" class="text-text-secondary text-sm hover:text-accent transition-colors">资本市场咨询</a></li>
           </ul>
         </div>
 
         <div>
           <h4 class="text-white font-semibold mb-6">联系方式</h4>
           <ul class="space-y-3">
-            <li class="text-text-secondary text-sm">📧 contact@nuevostec.com</li>
+            <li class="text-text-secondary text-sm">📧 35145168@qq.com</li>
             <li class="text-text-secondary text-sm">🌐 www.nuevostec.com</li>
             <li class="text-text-secondary text-sm">📍 四川省成都市高新区</li>
           </ul>

@@ -20,5 +20,9 @@
     "echarts": "^6.0.0",
     "leaflet": "^1.9.4",
     "nuxt": "^4.4.2"
+  },
+  "devDependencies": {
+    "topojson-client": "^3.1.0",
+    "world-atlas": "^2.0.2"
   }
 }

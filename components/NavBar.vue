@@ -83,7 +83,7 @@ const navItems = [
   { id: 'services', label: '业务板块' },
   { id: 'outbound', label: '企业出海' },
   { id: 'cloud-ai', label: '企业上云' },
-  { id: 'trade-map', label: '贸易热点' },
+  { id: 'trade-map', label: '资本市场咨询' },
 ]
 
 onMounted(() => {
